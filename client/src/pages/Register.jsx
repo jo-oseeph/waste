@@ -1,59 +1,83 @@
-import React from 'react';
 import { useState } from 'react';
+// import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    role: 'producer' // Default value
   });
+  
+  // const { register } = useAuth();
 
-  const RegisterUser = (event) => {
-    event.preventDefault();
-    console.log("Form submitted with data:", data);
-
-    // Add validation
-    if (!data.name || !data.email || !data.password) {
-      console.error("All fields are required!");
-      return;
-    }
-
-    // Handle registration logic here (e.g., API call)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Register(formData.name, formData.email, formData.password, formData.role);
   };
 
   return (
-    <div className="register">
-      <h1>Register</h1>
-      <form onSubmit={RegisterUser}>
-        <div>
-          <label>Name:</label>
+    <div className="auth-container">
+      <h2>Create Account</h2>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <div className="form-group">
+          <label htmlFor="name">Full Name</label>
           <input
+            id="name"
             type="text"
-            placeholder="Enter your name"
-            value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            placeholder="Enter your full name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
           />
         </div>
-        <div>
-          <label>Email:</label>
+
+        <div className="form-group">
+          <label htmlFor="email">Email Address</label>
           <input
+            id="email"
             type="email"
             placeholder="Enter your email"
-            value={data.email}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            required
           />
         </div>
-        <div>
-          <label>Password:</label>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
-            placeholder="Enter your password"
-            value={data.password}
-            onChange={(e) => setData({ ...data, password: e.target.value })}
+            placeholder="Create a password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            required
           />
         </div>
-        <button type="submit">Register</button>
+
+        <div className="form-group">
+          <label htmlFor="role">I want to join as:</label>
+          <select
+            id="role"
+            value={formData.role}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            className="role-select"
+          >
+            <option value="producer">E-Waste Producer</option>
+            <option value="recycler">Recycler/Collector</option>
+          </select>
+        </div>
+
+        <button type="submit" className="auth-button">
+          Create Account
+        </button>
       </form>
+
+      <p className="auth-footer">
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
     </div>
   );
 };

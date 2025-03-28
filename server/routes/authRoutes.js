@@ -1,6 +1,13 @@
 import express from 'express';
-const router = express.Router();
 import cors from 'cors';
 
-//middleware
-router.use(cors()); 
+const app = express();
+
+// Middleware
+router.use(cors()); // CORS middleware
+
+// Test route
+router.get('/', test) 
+
+module.exports = router;
+
